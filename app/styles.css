@@ -1,0 +1,11 @@
+table {
+	height: 500px;
+}
+
+tr:nth-child(odd) {
+	background-color: #add8e6;
+}
+
+tr:hover {
+	background-color: #eeeeee;
+}
