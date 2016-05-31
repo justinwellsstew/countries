@@ -1,0 +1,15 @@
+{
+  "name": "countries",
+  "version": "1.0.0",
+  "description": "This is a project that details countries and capitals",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp-connect": "^4.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Justin Wells Stewart",
+  "license": "ISC"
+}
