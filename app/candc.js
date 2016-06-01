@@ -14,11 +14,20 @@ angular.module('CACApp', ['ngRoute'])
     .controller('HomeCtrl', function($scope) {
         //empty for now
     })
-    .controller('CountriesCtrl', function($scope, $http){
+    .controller('CountriesCtrl', function($scope, $rootScope, $cacheFactory, $http){
+        var url = 'http://api.geonames.org/countryInfoJSON?username=stewartj';
 
-    	$http.get('http://api.geonames.org/countryInfoJSON?username=stewartj')
+    	$http.get(url,{
+            cache : true
+        })
     	.then(function(data){
     		$scope.countryNames = data.data.geonames;
+            $rootScope.countryNames = $scope.countryNames;
+
+            //caching
+            // var cache = $cacheFactory.get('$http');
+            // var cachedResponse = cache.get(url); 
+            // console.log(cachedResponse);
     	},
     		function(){
     		console.log('fail')	
@@ -26,6 +35,40 @@ angular.module('CACApp', ['ngRoute'])
     	);
 
     })
-    .controller('DetailCtrl', function($scope){
+    .controller('DetailCtrl', function($scope, $rootScope, $http, $routeParams){
+        // var url = 'http://api.geonames.org/countryInfoJSON?username=stewartj';
 
-    })
+        // get country from country page 
+    	$scope.selectedCountry = $routeParams.countryCode;
+
+    
+        //get country data from country page
+        $scope.countryNames = $rootScope.countryNames;
+
+        angular.forEach($scope.countryNames, function(value, key) {
+           if($scope.selectedCountry == value.fipsCode){
+            $scope.population = value.population;
+            $scope.area = value.areaInSqKm;
+            $scope.capital = value.capital;
+            $scope.geonameId = value.geonameId;
+           }
+           console.log (value.fipsCode);
+        });
+
+        console.log($scope.countryNames);
+
+    	$http.get('http://api.geonames.org/searchJSON?name_equals='+$scope.capital+'&country='+$scope.selectedCountry+'&username=stewartj')
+    	.then(function(data){
+    		$scope.capitalPopulation = data.data.geonames[0]['population'];
+    	},function(){
+    		console.log('something went wrong');
+    	});
+
+
+        $http.get('http://api.geonames.org/neighboursJSON?geonameId='+$scope.geonameId+'&username=stewartj')
+        .then(function(data){
+            console.log(data);
+        }, function(){
+            console.log('something went wrong');
+            })
+        })
