@@ -59,7 +59,9 @@ angular.module('CACApp', ['ngRoute'])
 
     	$http.get('http://api.geonames.org/searchJSON?name_equals='+$scope.capital+'&country='+$scope.selectedCountry+'&username=stewartj')
     	.then(function(data){
+            if(data.data.geonames[0]['population']){
     		$scope.capitalPopulation = data.data.geonames[0]['population'];
+            }
     	},function(){
     		console.log('something went wrong');
     	});
@@ -67,7 +69,11 @@ angular.module('CACApp', ['ngRoute'])
 
         $http.get('http://api.geonames.org/neighboursJSON?geonameId='+$scope.geonameId+'&username=stewartj')
         .then(function(data){
-            console.log(data);
+            var neighbors = "";
+           angular.forEach(data.data.geonames, function(value, key) {
+            neighbors = neighbors + value.name + " ";
+        });
+        $scope.neighbors = neighbors;   
         }, function(){
             console.log('something went wrong');
             })
