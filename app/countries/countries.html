@@ -1,12 +1,14 @@
 <div id="countries">
+<h1> Countries and Capitals </h1>
+<hr>
 	<table>
 		<tr><th>Country Name</th><th>Code</th><th>Capital</th><th>Area</th><th>Population</th><th>Continent</th></tr>
-		<tr ng-repeat="countryName in countryNames">
-			<td>{{countryName.countryName}}</td>
-			<td><a href="#countries/{{countryName.fipsCode}}">{{countryName.fipsCode}}</a></td>
-			<td>{{countryName.capital}}</td>
-			<td>{{countryName.areaInSqKm | number:0}}</td>
-			<td>{{countryName.population | number:0}}</td>
+		<tr ng-repeat="(key, value) in countryNames">
+			<td>{{value.countryName}}</td>
+			<td><a href="#countries/{{key}}">{{value.fipsCode}}</a></td>
+			<td>{{value.capital}}</td>
+			<td>{{value.areaInSqKm | number:0}}</td>
+			<td>{{value.population | number:0}}</td>
 			<td>{{countryName.continent}}</td>
 		</tr>
 	</table>
