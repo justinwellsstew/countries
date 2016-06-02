@@ -10,8 +10,10 @@
 		<!-- endbuild -->
 		<link href="styles.css" rel="stylesheet"/>
 	</head>
-	<body ng-app="CACApp">
-	<div ng-view></div>
+	<body ng-app="CACApp" ng-class="{loading: isLoading}">
+	<div class="animate-view-container">
+		<div ng-view class="animate-view"></div>
+	</div>
 		
 	</body>
 </html>

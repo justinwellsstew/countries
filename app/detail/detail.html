@@ -1,21 +1,19 @@
 <div id="details">
-<h1> Countries and Capitals </h1>
-<hr>
-<a href="#/">Home</a>
-<a href="#countries">Browse Countries</a>
-<h2>{{countryName}}</h2>
-Population: {{population}}<br/>
-Area: {{area}}<br/>
-Capital: {{capital}}<br/>
-<hr/>
-{{capital}} population : {{capitalPopulation}}<br/>
+	<h1> Countries and Capitals </h1>
+	<hr>
+	<a href="#/">Home</a>
+	<a href="#countries">Browse Countries</a>
+	<h2>{{countryName}}</h2>
+	Population: {{population | number:0}}<br/>
+	Area: {{area | number:0}}<br/>
+	Capital: {{capital}}<br/>
+	<hr/>
+	{{capital}} Population : {{capitalPopulation | number:0}}<br/>
 
-neighbors: {{neighbors}}<br/>
-        
-<img ng-src="http://www.geonames.org/flags/x/{{countryCode | lowercase}}.gif"  />
-
-
-
+	Neighbors: {{neighbors}}<br/>
+	        
+	<img ng-src="http://www.geonames.org/flags/x/{{countryCode | lowercase}}.gif"  />
+	<img id='myImage' src="http://www.geonames.org/img/country/250/{{countryCode | uppercase}}.png" />
 
 </div>
 

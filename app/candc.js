@@ -1,4 +1,6 @@
-angular.module('CACApp', ['ngRoute'])
+angular.module('CACApp', ['ngRoute' , 'ngAnimate'])
+
+    // create routes for pages
     .config(['$routeProvider', function($routeProvider){
         $routeProvider.when('/', {
             templateUrl : 'home/home.html',
@@ -11,6 +13,19 @@ angular.module('CACApp', ['ngRoute'])
         	controller : 'DetailCtrl'
         }).otherwise('/')
     }])
+    .run(function($rootScope, $timeout) {
+            
+            $rootScope.$on('$routeChangeStart', function() {
+                $rootScope.isLoading = true;
+            });
+            $rootScope.$on('$routeChangeSuccess', function() {
+              $timeout(function() {
+                $rootScope.isLoading = false;
+              }, 1000);
+            });
+        })
+
+    //create factories for $http requests
     .factory("countryData", function($http) {
         return function() {
             return $http.get('http://api.geonames.org/countryInfoJSON?username=stewartj')
@@ -29,7 +44,7 @@ angular.module('CACApp', ['ngRoute'])
     .controller('HomeCtrl', function($scope) {
         //empty for now
     })
-    .controller('CountriesCtrl', function($scope, $rootScope, countryData, $http){
+    .controller('CountriesCtrl', function($scope, $http, countryData){
     	countryData()
     	.then(function(data){
     		$scope.countryNames = data.data.geonames;
@@ -55,6 +70,7 @@ angular.module('CACApp', ['ngRoute'])
             $scope.countryCode = data.data.geonames[$scope.selectedCountry].fipsCode;
             $scope.area = data.data.geonames[$scope.selectedCountry].areaInSqKm;
             $scope.capital = data.data.geonames[$scope.selectedCountry].capital;
+            $scope.continent = data.data.geonames[$scope.selectedCountry].continentName;
             $scope.geonameId = data.data.geonames[$scope.selectedCountry].geonameId;
             return capitalPopulationData($scope.capital, $scope.countryCode);
         },
@@ -65,9 +81,10 @@ angular.module('CACApp', ['ngRoute'])
 
         .then(function(data) {
             console.log(data);
-      //  Store the profile, now get the permissions.
+
+      //  get population of capital
         if(data.data.geonames[0]['population']){
-        $scope.capitalPopulation = data.data.geonames[0]['population'];
+            $scope.capitalPopulation = data.data.geonames[0]['population'];
         }else{
             $scope.capitalPopulation = "unknown";
         }
@@ -78,7 +95,7 @@ angular.module('CACApp', ['ngRoute'])
             console.log('Something went wrong')
         })
 
-
+        //get neighbors
         .then(function(data){
             var neighbors = "";
            angular.forEach(data.data.geonames, function(value, key) {
